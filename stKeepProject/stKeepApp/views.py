@@ -52,4 +52,4 @@ def logout_view(request):
         return redirect('login')
     
     else:
-        return redirect('index')
+        return render(request, 'logout.html')

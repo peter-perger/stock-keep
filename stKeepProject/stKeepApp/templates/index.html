@@ -6,6 +6,18 @@
     <title>stockKeep - Index</title>
 </head>
 <body>
-    <h1>Index</h1>
+    <h1>StockKeep</h1>
+    <p>Welcome! 
+        {% if request.user.is_authenticated %}
+            {{ request.user.username }}
+            <form action="{% url 'logout' %}", method="POST">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        {% else %}
+            Please log in to your account!
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </p>
 </body>
 </html>

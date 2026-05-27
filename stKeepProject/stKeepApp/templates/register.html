@@ -7,5 +7,11 @@
 </head>
 <body>
     <h1>Register</h1>
+    <form action="{% url 'register' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+        <p>NAlready have an account? <a href="{% url 'login' %}">Login!</a></p>
+    </form>
 </body>
 </html>

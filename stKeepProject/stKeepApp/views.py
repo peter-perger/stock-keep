@@ -1,12 +1,17 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm
 
+from django.views import View
+
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+
 def index_view(request):
     return render(request, 'index.html')
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -53,3 +58,13 @@ def logout_view(request):
     
     else:
         return render(request, 'logout.html')
+
+
+class ProfileView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    
+    # 'next' - to redirect URL
+    redirect_field_name = 'next'
+
+    def get(self, request):
+        return render(request, 'profile.html')

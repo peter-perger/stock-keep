@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm
+from .forms import RegisterForm, AddProductForm
 
 from django.views import View
 
@@ -68,3 +68,27 @@ class ProfileView(LoginRequiredMixin, View):
 
     def get(self, request):
         return render(request, 'profile.html')
+    
+
+class AddProductView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
+   
+    def get(self, request):
+            form = AddProductForm()
+            context = {'form': form}
+
+            return render(request, 'add-product.html', context=context)
+    
+    def post(self, request):
+        form = AddProductForm(request.POST)
+
+        if form.is_valid():
+            product = form.save()
+            product.managed_by = request.user
+            product.save()
+
+            return redirect("index")
+        else:
+            return render(request, 'add-product.html', {'form': form})

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import Product
 
 class RegisterForm(forms.ModelForm):
     username = forms.CharField(max_length=150, help_text="")
@@ -21,3 +22,13 @@ class RegisterForm(forms.ModelForm):
         
         return cleaned_data
 
+
+class AddProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ["name", "price", 'quantity', 'supplier']
+
+    def clean(self):
+        cleaned_data =  super().clean()
+        return cleaned_data
+    

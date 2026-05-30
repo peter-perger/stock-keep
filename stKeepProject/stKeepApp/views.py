@@ -14,6 +14,7 @@ def index_view(request):
 
 
 def login_view(request):
+    error_message = None
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -23,9 +24,9 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return redirect('index')
+        else:
+            error_message = "Invalid username or password"
         
-  
-    error_message = "Invalid username or password"
     context = {"error_message": error_message}
 
     return render(request, 'login.html', context=context)

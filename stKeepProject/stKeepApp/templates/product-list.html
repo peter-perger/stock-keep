@@ -13,6 +13,7 @@
             <span>{{product.supplier}}</span>
             <span>{{ product.quantity }}</span>
             <span>{{ product.price }}$</span>
+            <a href="{% url 'edit-product' product.id%}">Edit Product</a>
             <br>
         {% endfor %}
         <br>

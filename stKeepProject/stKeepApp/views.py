@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
 from .forms import RegisterForm, AddProductForm
@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+
 
 
 def index_view(request):
@@ -95,6 +96,7 @@ class AddProductView(LoginRequiredMixin, View):
         else:
             return render(request, 'add-product.html', {'form': form})
 
+
 class ProductListView(LoginRequiredMixin, View):
     login_url = "/login/"
     redirect_field_name = "next"
@@ -106,3 +108,34 @@ class ProductListView(LoginRequiredMixin, View):
         context = {"products": products}
 
         return render(request,'product-list.html', context=context)
+
+
+class EditProductView(LoginRequiredMixin, View):
+    login_url = "/login/"
+    redirect_field_name = "next"
+
+    def get(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        form = AddProductForm(instance=product)
+
+        context = {
+            "form": form,
+            "product": product 
+        }
+
+        return render(request, "edit-product.html", context=context)
+    
+    def post(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        form = AddProductForm(request.POST, instance=product)
+
+        if form.is_valid():
+            form.save()
+            return redirect('product-list')
+        
+        context = {
+            "form": form,
+            "product": product 
+        }
+        
+        return render(request, 'edit-product.html', context=context)

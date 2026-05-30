@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stockKeep - Product List</title>
+</head>
+<body>
+    <h1>Prouct List</h1>
+    <div>
+        {% for product in products%}
+            <span>{{ product.name }}</span>
+            <span>{{product.supplier}}</span>
+            <span>{{ product.quantity }}</span>
+            <span>{{ product.price }}$</span>
+            <br>
+        {% endfor %}
+        <br>
+        <a href="{% url 'add-product' %}">add product</a>
+    </div>
+    
+</body>
+</html>

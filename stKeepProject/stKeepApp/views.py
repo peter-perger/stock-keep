@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from .forms import RegisterForm, AddProductForm
-
 from django.views import View
+
+from .forms import RegisterForm, AddProductForm
+from .models import Product
 
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -90,6 +91,18 @@ class AddProductView(LoginRequiredMixin, View):
             product.managed_by = request.user
             product.save()
 
-            return redirect("index")
+            return redirect("product-list")
         else:
             return render(request, 'add-product.html', {'form': form})
+
+class ProductListView(LoginRequiredMixin, View):
+    login_url = "/login/"
+    redirect_field_name = "next"
+
+    def get(self, request):
+        products = Product.objects.all()
+        print(products)
+
+        context = {"products": products}
+
+        return render(request,'product-list.html', context=context)
